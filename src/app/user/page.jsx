@@ -110,9 +110,10 @@ const handlePredict = async () => {
 
     try {
       // URL diganti ke Hugging Face (pastikan endpoint /predict sesuai dengan di main.py Anda)
-      const response = await fetch('https://https://idiom-acid-reselect.ngrok-free.dev-disaster-api.static.hf.space/predict', {
+      const response = await fetch('https://idiom-acid-reselect.ngrok-free.dev/predict', {
         method: 'POST',
         body: formData
+
       });
       const data = await response.json();
       setResult(data);
