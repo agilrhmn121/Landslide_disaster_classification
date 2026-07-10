@@ -98,16 +98,19 @@ export default function UserDashboardLanding() {
     }
   };
 
-  const handlePredict = async () => {
+const handlePredict = async () => {
     if (!selectedFile) return;
     setLoading(true);
     setResult(null);
 
     const formData = new FormData();
+    // Pastikan key 'image' ini sama dengan yang ada di FastAPI (misal: file: UploadFile)
+    // Jika di FastAPI namanya 'file', ganti 'image' di bawah ini menjadi 'file'
     formData.append('image', selectedFile);
 
     try {
-      const response = await fetch('/api/predict', {
+      // URL diganti ke Hugging Face (pastikan endpoint /predict sesuai dengan di main.py Anda)
+      const response = await fetch('https://agilkunn-disaster-api.static.hf.space/predict', {
         method: 'POST',
         body: formData
       });
