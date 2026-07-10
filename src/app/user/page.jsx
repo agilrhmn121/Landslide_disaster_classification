@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import {
-  LogOut, AlertCircle, Upload, Loader2, ArrowRight, ImageOff,
+  Upload, Loader2, ArrowRight, ImageOff,
   Mountain, Droplets, TreePine, Waves,
   Cpu, Layers, Workflow,
   UploadCloud, ScanEye, Tags, FileCheck2,
@@ -81,52 +80,11 @@ const fiturUnggulan = [
 ];
 
 export default function UserDashboardLanding() {
-  const [user, setUser] = useState(null);
-  const [sessionError, setSessionError] = useState(false);
-  const router = useRouter();
-
   // State untuk Prediksi
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-
-  // ==========================================
-  // AUTHENTICATION CHECK
-  // ==========================================
-  useEffect(() => {
-    try {
-      const session = localStorage.getItem('user_session');
-      if (!session) {
-        router.push('/');
-        return;
-      }
-
-      const userData = JSON.parse(session);
-      if (userData?.role === 'admin') {
-        router.push('/admin');
-        return;
-      }
-
-      if (userData && userData.name) {
-        setUser(userData);
-      } else {
-        throw new Error("Data sesi tidak lengkap");
-      }
-    } catch (error) {
-      console.error("Error membaca sesi:", error);
-      setSessionError(true);
-      localStorage.removeItem('user_session');
-      setTimeout(() => {
-        router.push('/');
-      }, 3000);
-    }
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('user_session');
-    router.push('/');
-  };
 
   // ==========================================
   // PREDICTION LOGIC
@@ -183,27 +141,6 @@ export default function UserDashboardLanding() {
   const isValidDisaster = isSuccess && validDisasters.includes(predictedLabel);
 
   // ==========================================
-  // RENDER STATES
-  // ==========================================
-  if (sessionError) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center font-medium text-red-600 bg-[#FAFAFA] p-6">
-        <AlertCircle size={48} className="mb-4 text-red-500" />
-        <h2 className="text-xl font-bold mb-2">Sesi Tidak Valid</h2>
-        <p>Mengarahkan ke halaman login...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-[#2E7D32] bg-[#FAFAFA]">
-        <Loader2 size={40} className="animate-spin" />
-      </div>
-    );
-  }
-
-  // ==========================================
   // MAIN RENDER (SINGLE PAGE SCROLL)
   // ==========================================
   return (
@@ -222,13 +159,12 @@ export default function UserDashboardLanding() {
           <a href="#uji-ai" className="hover:text-[#2E7D32] transition-colors">Uji AI</a>
         </nav>
         <div className="flex items-center gap-4">
-          <span className="font-bold text-[#8D6E63] hidden sm:inline">Halo, {user.name}</span>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl font-bold text-sm transition-colors"
+          <a
+            href="#uji-ai"
+            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-[#2E7D32] text-white hover:bg-[#1b5e20] rounded-xl font-bold text-sm transition-colors"
           >
-            <LogOut size={16} strokeWidth={2.5} /> Logout
-          </button>
+            Uji AI
+          </a>
         </div>
       </header>
 
